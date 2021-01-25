@@ -50,7 +50,6 @@ class Config:
         """
         if block is None:
             block = self.data
-
         if "/" in name:
             delimiter_pos = name.find("/")
             block_name = name[:delimiter_pos]
@@ -184,10 +183,14 @@ class Config:
         :return: The list.
         """
         value = self._get_value_with_fallback(name, fallback, True)
-
         if isinstance(value, mathutils.Vector):
             value = list(value)
-
+        if isinstance(value, str):
+            if value == "-1":
+                value = []
+            else:
+                value = [int(x) for x in value.split(',')]
+        
         if not isinstance(value, list):
             raise TypeError("Cannot convert '" + str(value) + "' to list!")
 

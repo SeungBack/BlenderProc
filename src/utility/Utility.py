@@ -48,7 +48,7 @@ class Utility:
         :return: a list of initialized modules
         """
         modules = []
-
+        
         for module_config in module_configs:
             # If only the module name is given (short notation)
             if isinstance(module_config, str):

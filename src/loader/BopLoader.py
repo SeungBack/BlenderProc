@@ -116,6 +116,7 @@ class BopLoader(LoaderInterface):
         print("dataset: {}".format(dataset))
 
         try:
+            sys.path.append(os.path.join(os.environ['BOP_PATH'], "bop_toolkit"))
             from bop_toolkit_lib import dataset_params, inout
         except ImportError as error:
             print('ERROR: Please download the bop_toolkit package and add it to sys_paths in config!')

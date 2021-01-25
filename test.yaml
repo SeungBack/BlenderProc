@@ -1,0 +1,428 @@
+modules:
+- config:
+    global:
+      output_dir: <args:4>
+      sys_paths:
+      - <args:2>
+  module: main.Initializer
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 1
+    obj_ids:
+    - 8
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 1
+    obj_ids:
+    - 16
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 0
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 0
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 2
+    obj_ids:
+    - 13
+    - 2
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 2
+    obj_ids:
+    - 11
+    - 13
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 0
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 1
+    obj_ids:
+    - 4
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 0
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: /home/seung/Workspace/datasets/OPE/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 3
+    obj_ids:
+    - 13
+    - 7
+    - 14
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+    bop_dataset_path: <args:0>/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: <args:5>
+    obj_ids: <args:6>
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    cf_set_base_color:
+      grey: true
+      max:
+      - 0.9
+      - 0.9
+      - 0.9
+      - 1.0
+      min:
+      - 0.1
+      - 0.1
+      - 0.1
+      - 1.0
+      provider: sampler.Color
+    selector:
+      conditions:
+      - name: bop_tless_vertex_col_material.*
+      provider: getter.Material
+  module: manipulators.MaterialManipulator
+- config:
+    cf_set_roughness:
+      max: 1.0
+      min: 0.0
+      provider: sampler.Value
+      type: float
+    cf_set_specular:
+      max: 1.0
+      min: 0.0
+      provider: sampler.Value
+      type: float
+    selector:
+      conditions:
+      - name: bop_tless_vertex_col_material.*
+      - name: bop_lm_vertex_col_material.*
+      - name: bop_<args:1>_vertex_col_material.*
+      provider: getter.Material
+  module: manipulators.MaterialManipulator
+- config:
+    meshes_to_add:
+    - name: ground_plane0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - 0
+      - -2
+      - 2
+      name: ground_plane1
+      rotation:
+      - -1.570796
+      - 0
+      - 0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - 0
+      - 2
+      - 2
+      name: ground_plane2
+      rotation:
+      - 1.570796
+      - 0
+      - 0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - 2
+      - 0
+      - 2
+      name: ground_plane4
+      rotation:
+      - 0
+      - -1.570796
+      - 0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - -2
+      - 0
+      - 2
+      name: ground_plane5
+      rotation:
+      - 0
+      - 1.570796
+      - 0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - 0
+      - 0
+      - 10
+      name: light_plane
+      scale:
+      - 3
+      - 3
+      - 1
+      type: plane
+  module: constructor.BasicMeshInitializer
+- config:
+    cp_physics: false
+    selector:
+      conditions:
+        name: .*plane.*
+      provider: getter.Entity
+  module: manipulators.EntityManipulator
+- config:
+    cf_switch_to_emission_shader:
+      color:
+        max:
+        - 1.0
+        - 1.0
+        - 1.0
+        - 1.0
+        min:
+        - 0.5
+        - 0.5
+        - 0.5
+        - 1.0
+        provider: sampler.Color
+      strength:
+        max: 6
+        min: 3
+        provider: sampler.Value
+        type: float
+    selector:
+      conditions:
+        name: light_plane_material
+      provider: getter.Material
+  module: manipulators.MaterialManipulator
+- config:
+    folder_path: <args:3>
+  module: loader.CCMaterialLoader
+- config:
+    cf_randomize_materials:
+      materials_to_replace_with:
+        conditions:
+          cp_is_cc_texture: true
+        provider: getter.Material
+        random_samples: 1
+      randomization_level: 1
+    mode: once_for_all
+    selector:
+      conditions:
+        name: ground_plane.*
+      provider: getter.Entity
+  module: manipulators.EntityManipulator
+- config:
+    objects_to_sample:
+      conditions:
+        cp_physics: true
+      provider: getter.Entity
+    pos_sampler:
+      max:
+        max:
+        - 0.3
+        - 0.3
+        - 0.6
+        min:
+        - 0.2
+        - 0.2
+        - 0.4
+        provider: sampler.Uniform3d
+      min:
+        max:
+        - -0.2
+        - -0.2
+        - 0.0
+        min:
+        - -0.3
+        - -0.3
+        - 0.0
+        provider: sampler.Uniform3d
+      provider: sampler.Uniform3d
+    rot_sampler:
+      provider: sampler.UniformSO3
+  module: object.ObjectPoseSampler
+- config:
+    angular_damping: 0.99
+    check_object_interval: 1
+    friction: 100.0
+    linear_damping: 0.99
+    max_simulation_time: 10
+    min_simulation_time: 3
+    objs_with_box_collision_shape:
+      conditions:
+        name: ground_plane.*
+      provider: getter.Entity
+    solver_iters: 25
+    substeps_per_frame: 20
+  module: object.PhysicsPositioning
+- config:
+    lights:
+    - color:
+        max:
+        - 1.0
+        - 1.0
+        - 1.0
+        - 1.0
+        min:
+        - 0.5
+        - 0.5
+        - 0.5
+        - 1.0
+        provider: sampler.Color
+      energy: 200
+      location:
+        center:
+        - 0
+        - 0
+        - 0
+        elevation_max: 89
+        elevation_min: 5
+        provider: sampler.Shell
+        radius_max: 1.5
+        radius_min: 1
+        uniform_elevation: true
+      type: POINT
+  module: lighting.LightSampler
+- config:
+    cam_poses:
+    - excluded_objs_in_proximity_check:
+        conditions:
+          name: ground_plane.*
+          type: MESH
+        provider: getter.Entity
+      location:
+        center:
+        - 0
+        - 0
+        - 0
+        elevation_max: 89
+        elevation_min: 5
+        provider: sampler.Shell
+        radius_max: 1.24
+        radius_min: 0.61
+        uniform_elevation: true
+      number_of_samples: 10
+      proximity_checks:
+        min: 0.3
+      rotation:
+        format: look_at
+        inplane_rot:
+          max: 0.7854
+          min: -0.7854
+          provider: sampler.Value
+          type: float
+        value:
+          provider: getter.POI
+          selector:
+            conditions:
+              cp_bop_dataset_name: <args:1>
+              type: MESH
+            provider: getter.Entity
+            random_samples: 10
+  module: camera.CameraSampler
+- config:
+    image_type: JPEG
+    render_distance: true
+    samples: 50
+  module: renderer.RgbRenderer
+- config:
+    append_to_existing_output: true
+    dataset: <args:1>
+    postprocessing_modules:
+      distance:
+      - module: postprocessing.Dist2Depth
+  module: writer.BopWriter
+setup:
+  blender_install_path: /home_local/<env:USER>/blender/
+  pip:
+  - h5py
+  - scikit-image
+  - pypng==0.0.20
+  - scipy==1.2.2
+  - matplotlib==2.2.4
+version: 3
