@@ -36,11 +36,16 @@ python run.py
 
 ```
 
+```
+python aumask/tools/generate_paths_to_category_id.py
+python /home/seung/BOP/bop_toolkit/scripts/calc_gt_masks.py
+```
 
 
 
 generate mask
 ```
 cd bop_toolkit 
+
 python scripts/cal_gt_masks.py
 ```

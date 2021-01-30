@@ -1,0 +1,549 @@
+modules:
+- config:
+    global:
+      output_dir: /home/seung/BOP/synthetic/bop-bin/
+      sys_paths:
+      - /home/seung/Workspace/papers/2021/AUMask/BlenderProc/aumask/cfgs/bop-bin_0.yaml
+  module: main.Initializer
+- config:
+    add_properties:
+      cp_physics: true
+      cp_upright: false
+    bop_dataset_path: /home/seung/BOP/hb
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 3
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+      cp_upright: false
+    bop_dataset_path: /home/seung/BOP/icmi
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 2
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+      cp_upright: false
+    bop_dataset_path: /home/seung/BOP/itodd
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 5
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+      cp_upright: false
+    bop_dataset_path: /home/seung/BOP/lm
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 2
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+      cp_upright: false
+    bop_dataset_path: /home/seung/BOP/ruapc
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 1
+    obj_ids:
+    - 1
+    - 2
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+      cp_upright: false
+    bop_dataset_path: /home/seung/BOP/tless
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 4
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+      cp_upright: false
+    bop_dataset_path: /home/seung/BOP/tyol
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 2
+    obj_ids: []
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    add_properties:
+      cp_physics: true
+      cp_upright: false
+    bop_dataset_path: /home/seung/BOP/ycbv
+    cf_set_shading: SMOOTH
+    mm2m: true
+    model_type: ''
+    num_of_objs_to_sample: 5
+    obj_ids:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 17
+    - 18
+    - 19
+    - 20
+    - 21
+    sample_objects: true
+  module: loader.BopLoader
+- config:
+    meshes_to_add:
+    - location:
+      - 0
+      - 0
+      - 0
+      name: bin_cube1
+      scale:
+      - 0.2947018421226061
+      - 0.38832570512260256
+      - 0.007369764515965801
+      type: cube
+    - location:
+      - -0.2947018421226061
+      - 0
+      - 0.1297359038617363
+      name: bin_cube2
+      scale:
+      - 0.007369764515965801
+      - 0.3956954696385684
+      - 0.1297359038617363
+      type: cube
+    - location:
+      - 0.2947018421226061
+      - 0
+      - 0.1297359038617363
+      name: bin_cube3
+      scale:
+      - 0.007369764515965801
+      - 0.3956954696385684
+      - 0.1297359038617363
+      type: cube
+    - location:
+      - 0
+      - -0.38832570512260256
+      - 0.1297359038617363
+      name: bin_cube4
+      scale:
+      - 0.2947018421226061
+      - 0.007369764515965801
+      - 0.1297359038617363
+      type: cube
+    - location:
+      - 0
+      - 0.38832570512260256
+      - 0.1297359038617363
+      name: bin_cube5
+      scale:
+      - 0.2947018421226061
+      - 0.007369764515965801
+      - 0.1297359038617363
+      type: cube
+  module: constructor.BasicMeshInitializer
+- config:
+    cp_category_id: 255
+    cp_physics: false
+    selector:
+      conditions:
+        name: .*cube.*
+      provider: getter.Entity
+  module: manipulators.EntityManipulator
+- config:
+    folder_path: /home/seung/Workspace/papers/2021/AUMask/BlenderProc/resources/cctextures
+    used_assets:
+    - Clay
+    - Fabric
+    - Paint
+    - Metal
+    - Leather
+    - Paper
+  module: loader.CCMaterialLoader
+- config:
+    cf_randomize_materials:
+      materials_to_replace_with:
+        conditions:
+        - cp_is_cc_texture: true
+        provider: getter.Material
+        random_samples: 1
+      randomization_level: 1
+    mode: once_for_all
+    selector:
+      conditions:
+        name: bin_cube.*
+      provider: getter.Entity
+  module: manipulators.EntityManipulator
+- config:
+    cf_set_base_color:
+      max:
+      - 0.9
+      - 0.9
+      - 0.9
+      - 1.0
+      min:
+      - 0.1
+      - 0.1
+      - 0.1
+      - 1.0
+      provider: sampler.Color
+    cf_set_roughness:
+      max: 1.0
+      min: 0.0
+      provider: sampler.Value
+      type: float
+    cf_set_specular:
+      max: 1.0
+      min: 0.0
+      provider: sampler.Value
+      type: float
+    mode: once_for_all
+    selector:
+      conditions:
+        name: bin_cube.*
+      provider: getter.Material
+  module: manipulators.MaterialManipulator
+- config:
+    meshes_to_add:
+    - name: ground_plane0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - 0
+      - -2
+      - 2
+      name: ground_plane1
+      rotation:
+      - -1.570796
+      - 0
+      - 0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - 0
+      - 2
+      - 2
+      name: ground_plane2
+      rotation:
+      - 1.570796
+      - 0
+      - 0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - 2
+      - 0
+      - 2
+      name: ground_plane4
+      rotation:
+      - 0
+      - -1.570796
+      - 0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - -2
+      - 0
+      - 2
+      name: ground_plane5
+      rotation:
+      - 0
+      - 1.570796
+      - 0
+      scale:
+      - 2
+      - 2
+      - 1
+      type: plane
+    - location:
+      - 0
+      - 0
+      - 10
+      name: light_plane
+      scale:
+      - 3
+      - 3
+      - 1
+      type: plane
+  module: constructor.BasicMeshInitializer
+- config:
+    cp_category_id: 5000
+    cp_physics: false
+    selector:
+      conditions:
+        name: .*plane.*
+      provider: getter.Entity
+  module: manipulators.EntityManipulator
+- config:
+    cf_switch_to_emission_shader:
+      color:
+        max:
+        - 1.0
+        - 1.0
+        - 1.0
+        - 1.0
+        min:
+        - 0.5
+        - 0.5
+        - 0.5
+        - 1.0
+        provider: sampler.Color
+      strength:
+        max: 6
+        min: 3
+        provider: sampler.Value
+        type: float
+    selector:
+      conditions:
+        name: light_plane_material
+      provider: getter.Material
+  module: manipulators.MaterialManipulator
+- config:
+    folder_path: /home/seung/Workspace/papers/2021/AUMask/BlenderProc/resources/cctextures
+    used_assets:
+    - Wood
+  module: loader.CCMaterialLoader
+- config:
+    cf_randomize_materials:
+      materials_to_replace_with:
+        conditions:
+        - cp_is_cc_texture: true
+        provider: getter.Material
+        random_samples: 1
+      randomization_level: 1
+    selector:
+      conditions:
+        name: ground_plane.*
+      provider: getter.Entity
+  module: manipulators.EntityManipulator
+- config:
+    objects_to_sample:
+      conditions:
+        cp_physics: true
+      provider: getter.Entity
+    pos_sampler:
+      max:
+      - 0.2
+      - 0.2
+      - 0.3
+      min:
+      - -0.2
+      - -0.2
+      - 0.0
+      provider: sampler.Uniform3d
+    rot_sampler:
+      provider: sampler.UniformSO3
+  module: object.ObjectPoseSampler
+- config:
+    angular_damping: 0.99
+    check_object_interval: 1
+    friction: 100.0
+    linear_damping: 0.99
+    max_simulation_time: 10
+    min_simulation_time: 3
+    objs_with_box_collision_shape:
+      conditions:
+      - type: plane
+      - type: cube
+      provider: getter.Entity
+    solver_iters: 25
+    substeps_per_frame: 20
+  module: object.PhysicsPositioning
+- config:
+    lights:
+    - color:
+        max:
+        - 1.0
+        - 1.0
+        - 1.0
+        - 1.0
+        min:
+        - 0.5
+        - 0.5
+        - 0.5
+        - 1.0
+        provider: sampler.Color
+      energy: 227.42173430748724
+      location:
+        center:
+        - 0
+        - 0
+        - 0
+        elevation_max: 5
+        elevation_min: 5
+        provider: sampler.Shell
+        radius_max: 1
+        radius_min: 1
+        uniform_elevation: true
+      type: POINT
+  module: lighting.LightSampler
+- config:
+    cam_poses:
+    - excluded_objs_in_proximity_check:
+        conditions:
+          name: ground_plane.*
+          type: MESH
+        provider: getter.Entity
+      location:
+        center:
+        - 0
+        - 0
+        - 0
+        elevation_max: 89
+        elevation_min: 80
+        provider: sampler.Shell
+        radius_max: 0.9
+        radius_min: 0.7
+        uniform_elevation: true
+      number_of_samples: 25
+      proximity_checks:
+        min: 0.3
+      rotation:
+        format: look_at
+        inplane_rot:
+          max: -7.57
+          min: -7.57
+          provider: sampler.Value
+          type: float
+        value:
+        - 0
+        - 0
+        - 0
+    intrinsics:
+      cam_K:
+      - 545.2764793509766
+      - 0
+      - 254.02164095240664
+      - 0
+      - 545.2764793509766
+      - 192.4588224388697
+      - 0
+      - 0
+      - 1
+      resolution_x: 512
+      resolution_y: 384
+  module: camera.CameraSampler
+- config:
+    cf_change_to_vertex_color: Col
+    selector:
+      conditions:
+        name: ply_material
+      provider: getter.Material
+  module: manipulators.MaterialManipulator
+- config:
+    cf_set_roughness:
+      max: 1.0
+      min: 0.0
+      provider: sampler.Value
+      type: float
+    cf_set_specular:
+      max: 1.0
+      min: 0.0
+      provider: sampler.Value
+      type: float
+    mode: once_for_each
+    selector:
+      conditions:
+      - name: bop_hb_vertex_col_matrial.*
+      - name: bop_icmi_vertex_col_matrial.*
+      - name: bop_itodd_vertex_col_matrial.*
+      - name: bop_lm_vertex_col_matrial.*
+      - name: bop_ruapc_vertex_col_matrial.*
+      - name: bop_tless_vertex_col_matrial.*
+      - name: bop_tyol_vertex_col_matrial.*
+      - name: bop_ycbv_vertex_col_matrial.*
+      provider: getter.Material
+  module: manipulators.MaterialManipulator
+- config:
+    cf_set_base_color:
+      grey: true
+      max:
+      - 0.9
+      - 0.9
+      - 0.9
+      - 1.0
+      min:
+      - 0.1
+      - 0.1
+      - 0.1
+      - 1.0
+      provider: sampler.Color
+    mode: once_for_each
+    selector:
+      conditions:
+      - name: bop_tless_vertex_col_material.*
+      - name: bop_itodd_vertex_col_material.*
+      provider: getter.Material
+  module: manipulators.MaterialManipulator
+- config:
+    image_type: PNG
+    render_distance: true
+    samples: 25
+  module: renderer.RgbRenderer
+- config:
+    append_to_existing_output: true
+    m2mm: true
+    postprocessing_modules:
+      distance:
+      - module: postprocessing.Dist2Depth
+  module: writer.BopWriter
+setup:
+  blender_install_path: /home_local/<env:USER>/blender/
+  pip:
+  - h5py
+  - pypng==0.0.20
+version: 3

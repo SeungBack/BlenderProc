@@ -13,6 +13,7 @@ from src.utility.Utility import Utility
 from src.utility.Config import Config
 from src.utility.CameraUtility import CameraUtility
 
+import yaml
 
 class BopLoader(LoaderInterface):
     """
@@ -105,6 +106,13 @@ class BopLoader(LoaderInterface):
         self.scale = 0.001 if self.config.get_bool("mm2m", False) else 1
         self.bop_dataset_name = os.path.basename(self.bop_dataset_path)
         self._has_external_texture = self.bop_dataset_name in ["ycbv", "ruapc"]
+        
+        ## ugly, but it works.
+        # SHSH
+        path_to_category_id_path = "/home/seung/BOP/synthetic/path_to_category_id.yaml"
+        with open(path_to_category_id_path, 'r') as f:
+            self.path_to_category_id = yaml.safe_load(f)    
+
 
     def run(self):
         """ Load BOP data """
@@ -318,6 +326,7 @@ class BopLoader(LoaderInterface):
 
         # Gets the objects if it is already loaded         
         cur_obj = self._get_loaded_obj(model_path)
+        print(model_path)
         # if the object was not previously loaded - load it, if duplication is allowed - duplicate it
         if cur_obj is None:
             if self._has_external_texture:
@@ -347,7 +356,9 @@ class BopLoader(LoaderInterface):
             cur_obj = bpy.context.selected_objects[-1]
 
         cur_obj.scale = Vector((scale, scale, scale))
-        cur_obj['category_id'] = obj_id
+        model_path = model_path.split('/')[4:]
+        model_path = '/'.join(model_path)
+        cur_obj['category_id'] = self.path_to_category_id[model_path]
         cur_obj['model_path'] = model_path
         if not self._has_external_texture:
             mat = self._load_materials(cur_obj)
@@ -357,6 +368,7 @@ class BopLoader(LoaderInterface):
             self._load_texture(cur_obj, texture_file_path)
         cur_obj["is_bop_object"] = True
         cur_obj["bop_dataset_name"] = self.bop_dataset_name
+        print("===============>", cur_obj['category_id'], model_path)
         return cur_obj
 
     def _load_materials(self, cur_obj):

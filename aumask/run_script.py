@@ -5,172 +5,117 @@ import yaml
 import subprocess
 import random
 from tqdm import tqdm
+from tools.cfg_builder import *
+import glob
+from pathlib import Path
+import math
+{"_cy": 384.0, "_cx": 511.5, "_fy": 1105.0, "_height": 772, "_fx": 1105.0, "_width": 1032, "_skew": 0.0, "_K": 0, "_frame": "phoxi"}
 
-BOP_PATH = os.environ['BOP_PATH']
-BOP_TOOLKIT_PATH = os.path.join(BOP_PATH, "bop_toolkit")
-BLENDERPROC_PATH = "/home/seung/Workspace/papers/2021/AUMask/BlenderProc"
-DATASETS = ("hb", "icbin", "icmi", "itodd", "lm", "ruapc", "tless", "tudl", "tyol", "ycbv")
-TEXTURE_PATH = BLENDERPROC_PATH + "/resources/cctextures"
-OUTPUT_PATH = BLENDERPROC_PATH + "/aumask/output"
+def get_num_of_objs_to_sample_per_dataset(opt, num_of_objs_to_sample):
+    
+    num_of_objs_per_dataset = []
+    n_total = 0
+    for dataset_name in opt["dataset_names"]:
+        model_type = "models_cad" if dataset_name == "tless" else "models"
+        n_obj = len(glob.glob(opt["bop_path"] + '/' + dataset_name + '/' + model_type + '/*.ply'))
+        if dataset_name == "ycbv":
+            n_obj -= 1 # banana
+        elif dataset_name == "ruapc":
+            n_obj -= 2 # crayon, bond
+        num_of_objs_per_dataset.append(n_obj)
+        n_total += n_obj
+        print(dataset_name, n_obj)
 
- 
-def get_obj_id_by_idx(obj_id_dict, obj_idx):
-    idx = 0
-    for dataset in DATASETS:
-        for obj_id in obj_id_dict[dataset]:
-            if obj_idx == idx:
-                return obj_id, dataset
-            else:
-                idx += 1
+    weights = [n_obj/n_total for n_obj in num_of_objs_per_dataset]
+    choices = np.random.choice(opt["dataset_names"], num_of_objs_to_sample, weights)
 
-def build_bop_loader(bop_path, dataset_name, n_objs_to_sample, obj_ids, smooth_shading=True):
+    num_of_objs_to_sample_per_dataset = {}
+    for dataset_name in opt["dataset_names"]:
+        num_of_objs_to_sample_per_dataset[dataset_name] = int(np.sum(np.where(choices==dataset_name, 1, 0)))
+        print(num_of_objs_to_sample, dataset_name, num_of_objs_to_sample_per_dataset[dataset_name])
+    return num_of_objs_to_sample_per_dataset
 
-    bop_loader = {
-        "module": "loader.BopLoader",
-        "config": {
-            "bop_dataset_path": "{}/{}".format(bop_path, dataset_name),
-            "model_type": "",
-            "mm2m": True,
-            "sample_objects": True,
-            "num_of_objs_to_sample": n_objs_to_sample,
-            "obj_ids": obj_ids,
-            "add_properties": {
-            "cp_physics": True
-            },
-        }
-    }
-    if smooth_shading:
-        bop_loader["config"]["cf_set_shading"] = "SMOOTH"
-    return bop_loader
+def get_camera_intrinsic_matrix(opt):
 
-def build_color_material_manipulator(dataset_name,  grey=False):
-    return {
-      "module": "manipulators.MaterialManipulator",
-      "config": {
-        "selector": {
-          "provider": "getter.Material",
-          "conditions": [
-          {
-            "name": "bop_{}_vertex_col_material.*".format(dataset_name)
-          }
-          ]
-        },
-        "cf_set_base_color": {
-          "provider": "sampler.Color",
-          "grey": grey,
-          "min": [0.1, 0.1, 0.1, 1.0],
-          "max": [0.9, 0.9, 0.9, 1.0]
-        }
-      }
-    }
+    min_f = opt["camera"]["focal_length"]["min"]
+    max_f = opt["camera"]["focal_length"]["max"]
+    mean_cx = float(opt["camera"]["resolution"]["x"]-1) / 2 
+    mean_cy = float(opt["camera"]["resolution"]["y"]-1) / 2 
+    min_delta_c = opt["camera"]["delta_optical_center"]["min"]
+    max_delta_c = opt["camera"]["delta_optical_center"]["max"]
+    min_cx = mean_cx + min_delta_c
+    max_cx = mean_cx + max_delta_c
+    min_cy = mean_cy + min_delta_c
+    max_cy = mean_cy + max_delta_c
 
-def build_specular_rougness_material_manipulator(dataset_names):
-    conditions = []
+
+    focal = random.uniform(min_f, max_f)
+    cx = random.uniform(min_cx, max_cx)
+    cy = random.uniform(min_cy, max_cy)
+
+    K = [focal, 0, cx, 0, focal, cy, 0, 0, 1]
+
+    opt["camera"]["cam_K"] = K
+    return opt
+
+def get_target_object_paths(bop_path, dataset_names, total_num_of_sample_objs, mode):
+
+    object_paths = []
     for dataset_name in dataset_names:
-        conditions.append({"name": "bop_{}_vertex_col_matrial.*".format(dataset_name)})
-    return {
-        "module": "manipulators.MaterialManipulator",
-        "config": {
-        "selector": {
-            "provider": "getter.Material",
-            "conditions": conditions
-        },
-        "cf_set_specular": {
-            "provider": "sampler.Value",
-            "type": "float",
-            "min": 0.0,
-            "max": 1.0
-        },
-        "cf_set_roughness": {
-            "provider": "sampler.Value",
-            "type": "float",
-            "min": 0.0,
-            "max": 1.0
-        }
-        }
-    }
-
-
+        idx_path = os.path.join(bop_path, dataset_name, mode + "_obj.txt")
+        model_type = "models_cad" if dataset_name == "tless" else "models"
+        with open(idx_path) as f:
+            for object_name in f.readlines():
+                object_paths.append(os.path.join(bop_path, dataset_name, model_type, object_name))
+    target_object_paths = random.sample(object_paths, total_num_of_sample_objs)
+    return target_object_paths
 
 if __name__ == "__main__":
 
+    # load args and opt 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", type=str, default="train", help="train or val")
-    parser.add_argument("--start_seq", type=int, default=0, help="sequence number")
-    parser.add_argument("--end_seq", type=int, default=1, help="sequence number")
-    parser.add_argument("--n_images_per_seq", type=int, default=25, help="sequence number")
+    parser.add_argument("--opt", type=str, default="test", help="file name of opt file")
     args = parser.parse_args()
+    file_path = Path(__file__).parent.absolute()
+    opt_path = os.path.join(file_path, "opts/{}.yaml".format(args.opt))
+    with open(opt_path, 'r') as f:
+        opt = yaml.safe_load(f)
+    
+    print("Rendering options: \n", opt)
 
-    for seq in tqdm(range(args.start_seq, args.end_seq)):
-        with open("aumask/configs/template.yaml") as f:
-            cfg = yaml.safe_load(f)
+    for seq in tqdm(range(opt["start_seq"], opt["end_seq"])):
         
-        # load obj_ids
-        obj_id_dict = {}
-        render_obj_id_dict = {}
-        n_obj = 0
-        for dataset in DATASETS:
-            idx_path = os.path.join(BOP_PATH, dataset, args.mode + "_obj.txt")
-            with open(idx_path) as f:
-                file_names = f.readlines()
-                obj_ids = []
-                for file_name in file_names:
-                    obj_id = file_name.split('.')[0][-2:]
-                    obj_ids.append(int(obj_id))
-                    n_obj += 1
-                obj_id_dict[dataset] = sorted(obj_ids)
-            render_obj_id_dict[dataset] = []
-        print("==>", args.mode, "obj_id_dict \n", obj_id_dict)
-        
-        # decide the number of objects to render for each dataset
-        total_num_of_sample_objs = random.randint(15, 30)
-        obj_idexes = np.random.choice(list(range(n_obj)), total_num_of_sample_objs)
-        for obj_idx in obj_idexes:
-            obj_id, dataset = get_obj_id_by_idx(obj_id_dict, obj_idx)
-            render_obj_id_dict[dataset].append(obj_id)
-        print("==> total number of sample objects:", total_num_of_sample_objs)
-        print("==> target render object \n", render_obj_id_dict)
-
-
-        CONFIG_PATH = BLENDERPROC_PATH + "/aumask/configs/{}.yaml".format(seq)
+        # load target obj_ids
+        total_num_of_sample_objs = random.randint(opt["object"]["num_of_sample_objs"]["min"], 
+                                                    opt["object"]["num_of_sample_objs"]["max"])
+        num_of_objs_to_sample_per_dataset = get_num_of_objs_to_sample_per_dataset(opt, total_num_of_sample_objs)
+        is_kit = False
+        if "kit" in num_of_objs_to_sample_per_dataset:
+            if num_of_objs_to_sample_per_dataset["kit"] !=0:
+                is_kit = True
+        opt = get_camera_intrinsic_matrix(opt)
 
         # save configuration file
-
-        # 1. initialize
+        cfg_path = os.path.join(file_path, "cfgs/{}_{}.yaml".format(args.opt, seq))
+        print("==>", cfg_path)
+        cfg = initialize_cfg(opt["output_path"], cfg_path)
         modules = []
-        initialier = {
-        "module": "main.Initializer",
-        "config": {
-            "global": {
-            "output_dir": OUTPUT_PATH,
-            "sys_paths": [CONFIG_PATH]
-            }
-        }
-        }
-        modules.append(initialier)
+        # Load bop dataset
+        for dataset_name, num_of_objs_to_sample in num_of_objs_to_sample_per_dataset.items():
+            modules += build_bop_loader(opt, dataset_name, num_of_objs_to_sample)
+        if opt["bin"]["is_used"]:
+            modules += build_bin_loader(opt)
+        modules += build_plane_loader(opt)
+        modules += build_object_pose_sampler(opt, is_kit)
+        modules += build_light_sampler(opt)
+        modules += build_camera_sampler(opt)
+        modules += build_object_material_manipulator(opt)
+        modules += build_rgb_render(opt)
+        modules += build_bop_writer(opt)
+        cfg["modules"] += modules
 
-        # 2. load bop dataset
-        for dataset in DATASETS:
-            obj_ids = render_obj_id_dict[dataset]
-            n_objs_to_sample = len(obj_ids)
-            bop_loader = build_bop_loader(BOP_PATH, dataset, n_objs_to_sample, obj_ids)
-            modules.append(bop_loader)
-
-        # 3. material
-        modules.append(build_color_material_manipulator("tless"))
-        modules.append(build_color_material_manipulator("itodd"))
-        modules.append(build_specular_rougness_material_manipulator(list(DATASETS)))
-
-        for module in reversed(modules):
-            cfg["modules"].insert(0, module)
-
-        with open("aumask/configs/{}.yaml".format(seq), 'w') as f:
+        with open(cfg_path, 'w') as f:
             yaml.dump(cfg, f)
         
-        arguments = [CONFIG_PATH, BOP_PATH, TEXTURE_PATH, str(args.n_images_per_seq)]
-        command = "python {}/run.py".format(BLENDERPROC_PATH)
-        for argument in arguments:
-            command += " "
-            command += argument
-        print("====>", command)
+        command = "python {}/run.py {}".format(opt["blenderproc_path"], cfg_path)
         subprocess.run(command, shell=True)
