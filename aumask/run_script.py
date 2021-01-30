@@ -58,17 +58,26 @@ def get_camera_intrinsic_matrix(opt):
     opt["camera"]["cam_K"] = K
     return opt
 
-def get_target_object_paths(bop_path, dataset_names, total_num_of_sample_objs, mode):
+def get_target_obj_ids(opt):
 
-    object_paths = []
-    for dataset_name in dataset_names:
-        idx_path = os.path.join(bop_path, dataset_name, mode + "_obj.txt")
+    object_idexes = {}
+    for dataset_name in opt["dataset_names"]:
+        idx_path = os.path.join(opt["bop_path"], dataset_name, opt["mode"] + "_obj.txt")
         model_type = "models_cad" if dataset_name == "tless" else "models"
+        object_idexes[dataset_name] = []
         with open(idx_path) as f:
-            for object_name in f.readlines():
-                object_paths.append(os.path.join(bop_path, dataset_name, model_type, object_name))
-    target_object_paths = random.sample(object_paths, total_num_of_sample_objs)
-    return target_object_paths
+            for file_name in f.readlines():
+                object_idx = int(file_name.split('.')[0].split('_')[1])
+                object_idexes[dataset_name].append(object_idx)
+        if dataset_name == "ycbv":
+            if 10 in object_idexes[dataset_name]: 
+                 object_idexes[dataset_name].remove(10) # banana
+        elif dataset_name == "ruapc":
+            if 3 in object_idexes[dataset_name]: 
+                object_idexes[dataset_name].remove(3) # crayon
+            if 4 in object_idexes[dataset_name]: 
+                object_idexes[dataset_name].remove(4)
+    return object_idexes
 
 if __name__ == "__main__":
 
@@ -89,6 +98,7 @@ if __name__ == "__main__":
         total_num_of_sample_objs = random.randint(opt["object"]["num_of_sample_objs"]["min"], 
                                                     opt["object"]["num_of_sample_objs"]["max"])
         num_of_objs_to_sample_per_dataset = get_num_of_objs_to_sample_per_dataset(opt, total_num_of_sample_objs)
+        object_idexes = get_target_obj_ids(opt)
         is_kit = False
         if "kit" in num_of_objs_to_sample_per_dataset:
             if num_of_objs_to_sample_per_dataset["kit"] !=0:
@@ -102,7 +112,7 @@ if __name__ == "__main__":
         modules = []
         # Load bop dataset
         for dataset_name, num_of_objs_to_sample in num_of_objs_to_sample_per_dataset.items():
-            modules += build_bop_loader(opt, dataset_name, num_of_objs_to_sample)
+            modules += build_bop_loader(opt, dataset_name, num_of_objs_to_sample, object_idexes[dataset_name])
         if opt["bin"]["is_used"]:
             modules += build_bin_loader(opt)
         modules += build_plane_loader(opt)

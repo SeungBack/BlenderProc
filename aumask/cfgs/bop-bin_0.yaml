@@ -13,8 +13,34 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 2
-    obj_ids: []
+    num_of_objs_to_sample: 1
+    obj_ids:
+    - 24
+    - 19
+    - 11
+    - 7
+    - 30
+    - 18
+    - 4
+    - 23
+    - 12
+    - 31
+    - 3
+    - 22
+    - 5
+    - 21
+    - 2
+    - 6
+    - 28
+    - 32
+    - 13
+    - 25
+    - 26
+    - 16
+    - 9
+    - 14
+    - 1
+    - 33
     sample_objects: true
   module: loader.BopLoader
 - config:
@@ -25,8 +51,12 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 1
-    obj_ids: []
+    num_of_objs_to_sample: 4
+    obj_ids:
+    - 3
+    - 4
+    - 2
+    - 6
     sample_objects: true
   module: loader.BopLoader
 - config:
@@ -36,8 +66,30 @@ modules:
     bop_dataset_path: /home/seung/BOP/itodd
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 1
-    obj_ids: []
+    num_of_objs_to_sample: 2
+    obj_ids:
+    - 28
+    - 2
+    - 22
+    - 25
+    - 26
+    - 24
+    - 3
+    - 13
+    - 11
+    - 6
+    - 16
+    - 23
+    - 14
+    - 21
+    - 12
+    - 19
+    - 27
+    - 20
+    - 5
+    - 15
+    - 18
+    - 17
     sample_objects: true
   module: loader.BopLoader
 - config:
@@ -48,8 +100,20 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 1
-    obj_ids: []
+    num_of_objs_to_sample: 5
+    obj_ids:
+    - 13
+    - 9
+    - 14
+    - 12
+    - 1
+    - 15
+    - 8
+    - 3
+    - 7
+    - 2
+    - 4
+    - 11
     sample_objects: true
   module: loader.BopLoader
 - config:
@@ -60,20 +124,18 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 1
+    num_of_objs_to_sample: 3
     obj_ids:
-    - 1
-    - 2
-    - 5
-    - 6
     - 7
-    - 8
-    - 9
-    - 10
-    - 11
     - 12
+    - 8
+    - 5
+    - 10
+    - 1
+    - 6
+    - 9
+    - 2
     - 13
-    - 14
     sample_objects: true
   module: loader.BopLoader
 - config:
@@ -83,8 +145,32 @@ modules:
     bop_dataset_path: /home/seung/BOP/tless
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 2
-    obj_ids: []
+    num_of_objs_to_sample: 4
+    obj_ids:
+    - 29
+    - 9
+    - 3
+    - 16
+    - 4
+    - 11
+    - 13
+    - 5
+    - 22
+    - 30
+    - 17
+    - 24
+    - 15
+    - 7
+    - 25
+    - 21
+    - 18
+    - 27
+    - 26
+    - 1
+    - 23
+    - 12
+    - 20
+    - 10
     sample_objects: true
   module: loader.BopLoader
 - config:
@@ -95,8 +181,24 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 2
-    obj_ids: []
+    num_of_objs_to_sample: 3
+    obj_ids:
+    - 3
+    - 17
+    - 12
+    - 13
+    - 11
+    - 19
+    - 9
+    - 5
+    - 16
+    - 18
+    - 2
+    - 8
+    - 20
+    - 10
+    - 15
+    - 7
     sample_objects: true
   module: loader.BopLoader
 - config:
@@ -109,26 +211,21 @@ modules:
     model_type: ''
     num_of_objs_to_sample: 3
     obj_ids:
-    - 1
+    - 18
     - 2
-    - 3
-    - 4
-    - 5
-    - 6
-    - 7
-    - 8
-    - 9
-    - 11
     - 12
     - 13
-    - 14
-    - 15
+    - 9
+    - 7
     - 16
-    - 17
-    - 18
+    - 4
     - 19
     - 20
-    - 21
+    - 1
+    - 8
+    - 3
+    - 6
+    - 11
     sample_objects: true
   module: loader.BopLoader
 - config:
@@ -139,49 +236,49 @@ modules:
       - 0
       name: bin_cube1
       scale:
-      - 0.26922765693069256
-      - 0.3136319135095331
-      - 0.0016941731294000933
+      - 0.2837075560117444
+      - 0.3947292513465091
+      - 0.004970309338629662
       type: cube
     - location:
-      - -0.26922765693069256
+      - -0.2837075560117444
       - 0
-      - 0.1193035460439026
+      - 0.13000249472346587
       name: bin_cube2
       scale:
-      - 0.0016941731294000933
-      - 0.3153260866389332
-      - 0.1193035460439026
+      - 0.004970309338629662
+      - 0.3996995606851388
+      - 0.13000249472346587
       type: cube
     - location:
-      - 0.26922765693069256
+      - 0.2837075560117444
       - 0
-      - 0.1193035460439026
+      - 0.13000249472346587
       name: bin_cube3
       scale:
-      - 0.0016941731294000933
-      - 0.3153260866389332
-      - 0.1193035460439026
+      - 0.004970309338629662
+      - 0.3996995606851388
+      - 0.13000249472346587
       type: cube
     - location:
       - 0
-      - -0.3136319135095331
-      - 0.1193035460439026
+      - -0.3947292513465091
+      - 0.13000249472346587
       name: bin_cube4
       scale:
-      - 0.26922765693069256
-      - 0.0016941731294000933
-      - 0.1193035460439026
+      - 0.2837075560117444
+      - 0.004970309338629662
+      - 0.13000249472346587
       type: cube
     - location:
       - 0
-      - 0.3136319135095331
-      - 0.1193035460439026
+      - 0.3947292513465091
+      - 0.13000249472346587
       name: bin_cube5
       scale:
-      - 0.26922765693069256
-      - 0.0016941731294000933
-      - 0.1193035460439026
+      - 0.2837075560117444
+      - 0.004970309338629662
+      - 0.13000249472346587
       type: cube
   module: constructor.BasicMeshInitializer
 - config:
@@ -417,7 +514,7 @@ modules:
         - 0.5
         - 1.0
         provider: sampler.Color
-      energy: 129.67895090766262
+      energy: 232.15002997836044
       location:
         center:
         - 0
@@ -465,12 +562,12 @@ modules:
         - 0
     intrinsics:
       cam_K:
-      - 544.157497182011
+      - 555.1401670181884
       - 0
-      - 256.24398632048883
+      - 255.13198895285822
       - 0
-      - 544.157497182011
-      - 192.55231656531296
+      - 555.1401670181884
+      - 191.29375461213272
       - 0
       - 0
       - 1

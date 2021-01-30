@@ -290,16 +290,8 @@ def build_object_loader(object_path, category_id):
     } 
     ]
 
-def build_bop_loader(opt, dataset_name, num_of_objs_to_sample):
+def build_bop_loader(opt, dataset_name, num_of_objs_to_sample, obj_ids):
     upright = True if dataset_name == "kit" else False
-    obj_ids = [] # all obejct
-    if dataset_name == "ycbv":
-      obj_ids = list(range(1, 22))
-      obj_ids.remove(10) # banana
-    elif dataset_name == "ruapc":
-      obj_ids = list(range(1, 15))
-      obj_ids.remove(3) # crayon
-      obj_ids.remove(4)
     module = [{
       "module": "loader.BopLoader",
       "config": {
