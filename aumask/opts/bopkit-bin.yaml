@@ -1,11 +1,10 @@
-bop_path: "/home/seung/BOP"
-blenderproc_path: "/home/seung/Workspace/papers/2021/AUMask/BlenderProc"
-cctexture_path:  "/home/seung/Workspace/papers/2021/AUMask/BlenderProc/resources/cctextures"
-output_path: "/home/seung/BOP/synthetic/bop-bin/"
-
+bop_path: "/home/demo/BOP"
+blenderproc_path: "/home/demo/BOP/BlenderProc"
+cctexture_path:  "/home/demo/BOP/BlenderProc/resources/cctextures"
+output_path: "/home/demo/BOP/synthetic/bopkit-bin/"
 
 mode: "train"
-dataset_names: ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tyol", "ycbv"]
+dataset_names: ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tyol", "ycbv", "kit"]
 start_seq: 0
 end_seq: 2000
 num_of_imgs_per_seq: 25

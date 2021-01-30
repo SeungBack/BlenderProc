@@ -9,7 +9,7 @@ from tools.cfg_builder import *
 import glob
 from pathlib import Path
 import math
-{"_cy": 384.0, "_cx": 511.5, "_fy": 1105.0, "_height": 772, "_fx": 1105.0, "_width": 1032, "_skew": 0.0, "_K": 0, "_frame": "phoxi"}
+
 
 def get_num_of_objs_to_sample_per_dataset(opt, num_of_objs_to_sample):
     
@@ -118,4 +118,5 @@ if __name__ == "__main__":
             yaml.dump(cfg, f)
         
         command = "python {}/run.py {}".format(opt["blenderproc_path"], cfg_path)
+        print("========> ", command)
         subprocess.run(command, shell=True)

@@ -109,7 +109,7 @@ class BopLoader(LoaderInterface):
         
         ## ugly, but it works.
         # SHSH
-        path_to_category_id_path = "/home/seung/BOP/synthetic/path_to_category_id.yaml"
+        path_to_category_id_path = "/home/demo/BOP/synthetic/path_to_category_id.yaml"
         with open(path_to_category_id_path, 'r') as f:
             self.path_to_category_id = yaml.safe_load(f)    
 

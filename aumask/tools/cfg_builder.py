@@ -421,8 +421,7 @@ def build_light_sampler(opt):
     },]
 
 def build_camera_sampler(opt):
-
-    return [{
+    module = [{
       "module": "camera.CameraSampler",
       "config": {
         "intrinsics": {
@@ -451,8 +450,14 @@ def build_camera_sampler(opt):
             "elevation_min": opt["camera"]["elevation"]["min"],
             "elevation_max": opt["camera"]["elevation"]["max"],
             "uniform_elevation": opt["camera"]["uniform_elevation"]
-          },
-          "rotation": {
+          }
+          
+        }
+        ]
+      }
+    }]
+    if opt["bin"]["is_used"]: 
+      module[0]["config"]["cam_poses"][0]["rotation"] = {
             "format": "look_at",
             "value": [0, 0, 0],
             "inplane_rot": {
@@ -461,11 +466,29 @@ def build_camera_sampler(opt):
               "min": opt["camera"]["inplane_rot"]["min"],
               "max": opt["camera"]["inplane_rot"]["min"]
             }
-          }
         }
-        ]
-      }
-    }]
+    else: 
+      module[0]["config"]["cam_poses"][0]["rotation"] = {
+      "format": "look_at",
+      "value": {
+            "provider": "getter.POI",
+            "selector": {
+              "provider": "getter.Entity",
+              "conditions": {
+                "cp_physics": True
+              },
+              "random_samples": 10
+            }
+          },
+          "inplane_rot": {
+              "provider": "sampler.Value",
+              "type": "float",
+              "min": opt["camera"]["inplane_rot"]["min"],
+              "max": opt["camera"]["inplane_rot"]["min"]
+          }
+        }     
+
+    return module
 
 def build_object_material_manipulator(opt):
     conditions = []

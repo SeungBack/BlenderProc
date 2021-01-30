@@ -60,7 +60,7 @@ camera:
     max: 89
   uniform_elevation: True
   inplane_rot:
-    min: -7.57
+    min: -1.57
     max: 1.57
 
 light:
