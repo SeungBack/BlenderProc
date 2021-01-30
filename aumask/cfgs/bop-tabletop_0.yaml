@@ -1,9 +1,9 @@
 modules:
 - config:
     global:
-      output_dir: /home/seung/BOP/synthetic/bop-bin/
+      output_dir: /home/seung/BOP/synthetic/bop-tabletop/
       sys_paths:
-      - /home/seung/Workspace/papers/2021/AUMask/BlenderProc/aumask/cfgs/bop-tabletop_0.yaml
+      - /home/seung/BOP/BlenderProc/aumask/cfgs/bop-tabletop_0.yaml
   module: main.Initializer
 - config:
     add_properties:
@@ -13,7 +13,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 6
+    num_of_objs_to_sample: 2
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -25,7 +25,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 3
+    num_of_objs_to_sample: 4
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -48,7 +48,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 4
+    num_of_objs_to_sample: 0
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -83,7 +83,7 @@ modules:
     bop_dataset_path: /home/seung/BOP/tless
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 6
+    num_of_objs_to_sample: 3
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -95,7 +95,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 3
+    num_of_objs_to_sample: 2
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -107,7 +107,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 3
+    num_of_objs_to_sample: 2
     obj_ids:
     - 1
     - 2
@@ -239,7 +239,7 @@ modules:
       provider: getter.Material
   module: manipulators.MaterialManipulator
 - config:
-    folder_path: /home/seung/Workspace/papers/2021/AUMask/BlenderProc/resources/cctextures
+    folder_path: /home/seung/BOP/BlenderProc/resources/cctextures
     used_assets:
     - Wood
   module: loader.CCMaterialLoader
@@ -303,7 +303,7 @@ modules:
         - 0.5
         - 1.0
         provider: sampler.Color
-      energy: 88.34350795930754
+      energy: 298.3899149074675
       location:
         center:
         - 0
@@ -341,22 +341,25 @@ modules:
       rotation:
         format: look_at
         inplane_rot:
-          max: -7.57
-          min: -7.57
+          max: -1.57
+          min: -1.57
           provider: sampler.Value
           type: float
         value:
-        - 0
-        - 0
-        - 0
+          provider: getter.POI
+          selector:
+            conditions:
+              cp_physics: true
+            provider: getter.Entity
+            random_samples: 10
     intrinsics:
       cam_K:
-      - 553.754788227898
+      - 543.7769928366212
       - 0
-      - 256.14352599717984
+      - 254.26337812250748
       - 0
-      - 553.754788227898
-      - 193.45129424656818
+      - 543.7769928366212
+      - 192.00195328164503
       - 0
       - 0
       - 1

@@ -108,8 +108,9 @@ class BopLoader(LoaderInterface):
         self._has_external_texture = self.bop_dataset_name in ["ycbv", "ruapc"]
         
         ## ugly, but it works.
-        # SHSH
-        path_to_category_id_path = "/home/demo/BOP/synthetic/path_to_category_id.yaml"
+        from os.path import expanduser
+        home = expanduser("~")
+        path_to_category_id_path = home + "/BOP/synthetic/path_to_category_id.yaml"
         with open(path_to_category_id_path, 'r') as f:
             self.path_to_category_id = yaml.safe_load(f)    
 

@@ -1,6 +1,6 @@
 bop_path: "/home/seung/BOP"
-blenderproc_path: "/home/seung/Workspace/papers/2021/AUMask/BlenderProc"
-cctexture_path:  "/home/seung/Workspace/papers/2021/AUMask/BlenderProc/resources/cctextures"
+blenderproc_path: "/home/seung/BOP/BlenderProc"
+cctexture_path:  "/home/seung/BOP/BlenderProc/resources/cctextures"
 output_path: "/home/seung/BOP/synthetic/bop-bin/"
 
 

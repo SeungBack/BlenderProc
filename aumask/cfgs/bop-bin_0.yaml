@@ -3,7 +3,7 @@ modules:
     global:
       output_dir: /home/seung/BOP/synthetic/bop-bin/
       sys_paths:
-      - /home/seung/Workspace/papers/2021/AUMask/BlenderProc/aumask/cfgs/bop-bin_0.yaml
+      - /home/seung/BOP/BlenderProc/aumask/cfgs/bop-bin_0.yaml
   module: main.Initializer
 - config:
     add_properties:
@@ -13,7 +13,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 3
+    num_of_objs_to_sample: 2
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -25,7 +25,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 2
+    num_of_objs_to_sample: 1
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -36,7 +36,7 @@ modules:
     bop_dataset_path: /home/seung/BOP/itodd
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 5
+    num_of_objs_to_sample: 1
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -48,7 +48,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 2
+    num_of_objs_to_sample: 1
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -83,7 +83,7 @@ modules:
     bop_dataset_path: /home/seung/BOP/tless
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 4
+    num_of_objs_to_sample: 2
     obj_ids: []
     sample_objects: true
   module: loader.BopLoader
@@ -107,7 +107,7 @@ modules:
     cf_set_shading: SMOOTH
     mm2m: true
     model_type: ''
-    num_of_objs_to_sample: 5
+    num_of_objs_to_sample: 3
     obj_ids:
     - 1
     - 2
@@ -139,49 +139,49 @@ modules:
       - 0
       name: bin_cube1
       scale:
-      - 0.2947018421226061
-      - 0.38832570512260256
-      - 0.007369764515965801
+      - 0.26922765693069256
+      - 0.3136319135095331
+      - 0.0016941731294000933
       type: cube
     - location:
-      - -0.2947018421226061
+      - -0.26922765693069256
       - 0
-      - 0.1297359038617363
+      - 0.1193035460439026
       name: bin_cube2
       scale:
-      - 0.007369764515965801
-      - 0.3956954696385684
-      - 0.1297359038617363
+      - 0.0016941731294000933
+      - 0.3153260866389332
+      - 0.1193035460439026
       type: cube
     - location:
-      - 0.2947018421226061
+      - 0.26922765693069256
       - 0
-      - 0.1297359038617363
+      - 0.1193035460439026
       name: bin_cube3
       scale:
-      - 0.007369764515965801
-      - 0.3956954696385684
-      - 0.1297359038617363
+      - 0.0016941731294000933
+      - 0.3153260866389332
+      - 0.1193035460439026
       type: cube
     - location:
       - 0
-      - -0.38832570512260256
-      - 0.1297359038617363
+      - -0.3136319135095331
+      - 0.1193035460439026
       name: bin_cube4
       scale:
-      - 0.2947018421226061
-      - 0.007369764515965801
-      - 0.1297359038617363
+      - 0.26922765693069256
+      - 0.0016941731294000933
+      - 0.1193035460439026
       type: cube
     - location:
       - 0
-      - 0.38832570512260256
-      - 0.1297359038617363
+      - 0.3136319135095331
+      - 0.1193035460439026
       name: bin_cube5
       scale:
-      - 0.2947018421226061
-      - 0.007369764515965801
-      - 0.1297359038617363
+      - 0.26922765693069256
+      - 0.0016941731294000933
+      - 0.1193035460439026
       type: cube
   module: constructor.BasicMeshInitializer
 - config:
@@ -193,7 +193,7 @@ modules:
       provider: getter.Entity
   module: manipulators.EntityManipulator
 - config:
-    folder_path: /home/seung/Workspace/papers/2021/AUMask/BlenderProc/resources/cctextures
+    folder_path: /home/seung/BOP/BlenderProc/resources/cctextures
     used_assets:
     - Clay
     - Fabric
@@ -353,7 +353,7 @@ modules:
       provider: getter.Material
   module: manipulators.MaterialManipulator
 - config:
-    folder_path: /home/seung/Workspace/papers/2021/AUMask/BlenderProc/resources/cctextures
+    folder_path: /home/seung/BOP/BlenderProc/resources/cctextures
     used_assets:
     - Wood
   module: loader.CCMaterialLoader
@@ -417,7 +417,7 @@ modules:
         - 0.5
         - 1.0
         provider: sampler.Color
-      energy: 227.42173430748724
+      energy: 129.67895090766262
       location:
         center:
         - 0
@@ -455,8 +455,8 @@ modules:
       rotation:
         format: look_at
         inplane_rot:
-          max: -7.57
-          min: -7.57
+          max: -1.57
+          min: -1.57
           provider: sampler.Value
           type: float
         value:
@@ -465,12 +465,12 @@ modules:
         - 0
     intrinsics:
       cam_K:
-      - 545.2764793509766
+      - 544.157497182011
       - 0
-      - 254.02164095240664
+      - 256.24398632048883
       - 0
-      - 545.2764793509766
-      - 192.4588224388697
+      - 544.157497182011
+      - 192.55231656531296
       - 0
       - 0
       - 1
