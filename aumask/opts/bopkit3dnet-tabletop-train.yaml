@@ -1,19 +1,20 @@
-bop_path: "/home/demo/BOP"
-blenderproc_path: "/home/demo/BOP/BlenderProc"
-cctexture_path:  "/home/demo/BOP/BlenderProc/resources/cctextures"
-output_path: "/home/demo/BOP/synthetic/bopkit-tabletop-val/"
+bop_path: "/home/seung/BOP"
+blenderproc_path: "/home/seung/BOP/BlenderProc"
+cctexture_path:  "/home/seung/BOP/BlenderProc/resources/cctextures"
+output_path: "/home/seung/BOP/synthetic/bopkit3dnet-tabletop-val/"
 
 mode: "train"
-dataset_names: ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tyol", "ycbv", "kit"]
+# dataset_names: ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tyol", "ycbv", "3dnet"]
+dataset_names: ["itodd", "tless", "3dnet"]
 start_seq: 0
-end_seq: 400
-num_of_imgs_per_seq: 25
+end_seq: 10
+num_of_imgs_per_seq: 10
 table_texture_assets: ["Wood"]
 
 object:
   num_of_sample_objs:
-    min: 1
-    max: 30
+    min: 10
+    max: 10
   position:
     min: [-0.2, -0.2, 0.0]
     max: [0.2, 0.2, 0.3]

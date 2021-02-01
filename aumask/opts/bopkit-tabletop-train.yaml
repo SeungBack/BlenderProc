@@ -6,7 +6,7 @@ output_path: "/home/demo/BOP/synthetic/bopkit-tabletop-train/"
 mode: "train"
 dataset_names: ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tyol", "ycbv", "kit"]
 start_seq: 0
-end_seq: 1
+end_seq: 1600
 num_of_imgs_per_seq: 25
 table_texture_assets: ["Wood"]
 

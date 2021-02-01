@@ -4,10 +4,10 @@ cctexture_path:  "/home/seung/BOP/BlenderProc/resources/cctextures"
 output_path: "/home/seung/BOP/synthetic/bop-tabletop-val/"
 
 
-mode: "train"
+mode: "val"
 dataset_names: ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tyol", "ycbv"]
 start_seq: 0
-end_seq: 2000
+end_seq: 400
 num_of_imgs_per_seq: 25
 table_texture_assets: ["Wood"]
 

@@ -4,7 +4,7 @@ import os
 
 
 bop_path = "/home/seung/BOP"
-dataset_names = ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tudl", "tyol", "ycbv", "kit"]
+dataset_names = ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tudl", "tyol", "ycbv", "kit", "3dnet"]
 output_path = "/home/seung/BOP/synthetic/path_to_category_id.yaml"
 path_to_category = {}
 category_id = 0

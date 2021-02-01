@@ -292,6 +292,7 @@ def build_object_loader(object_path, category_id):
 
 def build_bop_loader(opt, dataset_name, num_of_objs_to_sample, obj_ids):
     upright = True if dataset_name == "kit" else False
+    randomtexture = True if dataset_name == "3dnet" else False
     module = [{
       "module": "loader.BopLoader",
       "config": {
@@ -303,7 +304,8 @@ def build_bop_loader(opt, dataset_name, num_of_objs_to_sample, obj_ids):
           "num_of_objs_to_sample": num_of_objs_to_sample,
           "add_properties": {
           "cp_physics": True,
-          "cp_upright": upright
+          "cp_upright": upright,
+          "cp_randomtexture": randomtexture
           },
       }
     }]
@@ -467,9 +469,9 @@ def build_camera_sampler(opt):
             "selector": {
               "provider": "getter.Entity",
               "conditions": {
-                "cp_physics": True
+                "type": "MESH",
               },
-              "random_samples": 10
+              "random_samples": opt["num_of_imgs_per_seq"]
             }
           },
           "inplane_rot": {
@@ -486,7 +488,7 @@ def build_object_material_manipulator(opt):
     conditions = []
     for dataset_name in opt["dataset_names"]:
         conditions.append({"name": "bop_{}_vertex_col_matrial.*".format(dataset_name)})
-    return [
+    module = [
       {
         "module": "manipulators.MaterialManipulator",
         "config": {
@@ -545,6 +547,42 @@ def build_object_material_manipulator(opt):
         }
       }
       ]
+    if "3dnet" in opt["dataset_names"]:
+        module.append( {
+        "module": "loader.CCMaterialLoader",
+        "config": {
+          "folder_path": opt["cctexture_path"],
+          # "used_assets": opt["table_texture_assets"]
+        }
+      },)
+        module.append(
+        {
+        "module": "manipulators.EntityManipulator",
+        "config": {
+          "selector": {
+            "provider": "getter.Entity",
+            "conditions": {
+              "cp_randomtexture": True
+            }
+          },
+          "mode": "once_for_each",
+          "cf_randomize_materials": {
+            "randomization_level": 1,
+            "materials_to_replace_with": {
+              "provider": "getter.Material",
+              "random_samples": 1,
+              "conditions": [{
+                "cp_is_cc_texture": True
+              }
+          ]}
+          }
+      }
+      }
+      )
+
+
+
+    return module
 
 def build_rgb_render(opt):
     return [{

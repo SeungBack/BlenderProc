@@ -1,8 +1,9 @@
 import os
 import random
 
-BOP_PATH = "/home/seung/Workspace/datasets/OPE/BOP"
+BOP_PATH = "/home/seung/BOP"
 DATASETS = ("hb", "icbin", "icmi", "itodd", "lm", "ruapc", "tless", "tudl", "tyol", "ycbv")
+
 
 TRAIN_RATIO = 0.8
 
