@@ -1,13 +1,13 @@
 bop_path: "/home/demo/BOP"
 blenderproc_path: "/home/demo/BOP/BlenderProc"
 cctexture_path:  "/home/demo/BOP/BlenderProc/resources/cctextures"
-output_path: "/home/demo/BOP/synthetic/bopkit-bin-val/"
+output_path: "/home/demo/BOP/synthetic"
 
 mode: "val"
-dataset_names: ["hb", "icmi", "itodd", "lm", "ruapc", "tless", "tyol", "ycbv", "kit"]
+dataset_names: ["lm", "tless", "tudl", "icmi", "tyol",  "ruapc", "itodd", "hb", "ycbv", "kit", "bigbird"]
 start_seq: 0
-end_seq: 400
-num_of_imgs_per_seq: 25
+end_seq: 250
+num_of_imgs_per_seq: 10
 table_texture_assets: ["Wood"]
 
 object:
@@ -19,7 +19,7 @@ object:
     max: [0.2, 0.2, 0.3]
  
 bin: 
-  is_used: true
+  is_used: False
   position:
     min: [-0.05, -0.05, 0.0]
     max: [0.05, 0.05, 0.0]
@@ -37,23 +37,23 @@ bin:
       min: 0.01
       max: 0.001
   texture_assets:
-    ["Clay", "Fabric", "Paint", "Metal", "Leather", "Paper"]
+    ["Clay", "Fabric", "Paint", "Metal", "Leather", "Paper", "Plastic", "Wood"]
 
 camera:
   resolution: 
-    x: 512
-    y: 384
+    x: 800
+    y: 600
   focal_length:
     min: 535
     max: 560
   delta_optical_center:                   
     min: -2.5                            
     max: 2.5
-  proximity_checks: 0.3
+  proximity_checks: 0.1
   center: [0, 0, 0]
   radius:
-    min: 0.7
-    max: 0.9
+    min: 0.4
+    max: 1.0
   elevation:
     min: 80
     max: 89
@@ -65,8 +65,8 @@ camera:
 light:
   center: [0, 0, 0]
   radius:
-    min: 1
-    max: 1.2
+    min: 0.5
+    max: 1.0
   elevation:
     min: 5
     max: 89
@@ -76,7 +76,7 @@ light:
     max: [1.0, 1.0, 1.0, 1.0]
   energy: 
     min: 50
-    max: 300
+    max: 500
 
 
 

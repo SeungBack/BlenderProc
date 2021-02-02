@@ -1,27 +1,27 @@
 import glob
 import os
-import trimesh
+import numpy as np
+import pymeshlab
 from tqdm import tqdm
-from plyfile import PlyData, PlyElement
 
 
 # load kit object models and convert it to bop format
-KIT_PATH = '/home/seung/Workspace/datasets/UOIS/object_models/kit/unzips'
+INPUT_PATH = '/home/seung/Workspace/datasets/UOIS/object_models/kit/unzips'
 OUTPUT_PATH = '/home/seung/BOP/kit'
 
-no_materials = ['SmallGlass', 'WhiteCup', 'Pitcher', 'Sprayflask', 'CokePlasticLarge', 
-                'CokePlasticSmall', 'VitalisCereals', 'SmacksCereals', 'CoffeeFilters', 
-                'ChoppedTomatoes', 'Wineglass', 'Waterglass', 'Glassbowl', 'Pinsel', 'Schraubenschluessel']
-                # Schlitzschraubenzieher ==> texture error when convert texture to vertex color
+no_materials = ['SmallGlass', 'Glassbowl', 'Wineglass', 'Waterglass',
+                'VitalisCereals', 'Pitcher', 'CoffeeFilters', 'SmacksCereals',  # material error. property without element
+                'Sprayflask', 'CokePlasticLarge', 'CokePlasticSmall', 'ChoppedTomatoes', 'WhiteCup']
 
-if not os.path.exists(OUTPUT_PATH):
-    os.mkdir(OUTPUT_PATH)
+if not os.path.exists(OUTPUT_PATH + '/models'):
+    os.mkdir(OUTPUT_PATH+ '/models')
 
 id = 1
-for i, obj_folder in enumerate(tqdm(sorted(glob.glob(KIT_PATH + '/*')))):
-    paths = sorted(glob.glob(obj_folder + '/meshes/*_tex.obj'))
+for i, input_folder_path in enumerate(tqdm(sorted(glob.glob(INPUT_PATH + '/*')))):
+    
+    paths = sorted(glob.glob(input_folder_path + '/meshes/*_tex.obj'))
     if len(paths) == 0:
-        print("no unzip files in ", obj_folder)
+        print("no unzip files in ", input_folder_path)
         continue
     object_name = paths[0].split('/')[-1].split('_')[0]
     file_name = 'obj_{:06d}.ply'.format(id)
@@ -30,26 +30,33 @@ for i, obj_folder in enumerate(tqdm(sorted(glob.glob(KIT_PATH + '/*')))):
         print("No material files. Skip", object_name)
         continue
     else:
-        id += 1
-        target_paths = []
+        input_obj_paths = []
         for p in paths:
             if "Orig" in p:
-                target_paths.append(p)
+                input_obj_paths.append(p)
             elif "25k" in p:
-                target_paths.append(p)
-        target_path = target_paths[-1]
-        
-    # load mesh and convert uv texture to vertex color
-    # load mesh and convert uv texture to vertex color
-    mesh = trimesh.load_mesh(target_path)
-    mesh.visual = mesh.visual.to_color()
-    mesh.export(OUTPUT_PATH + '/models/tmp.ply')
-    with open(OUTPUT_PATH + '/models/tmp.ply', 'rb') as f:
-        plydata = PlyData.read(f)
-        PlyData(plydata.elements, text=True).write(OUTPUT_PATH + '/models/' + file_name)
-    print("Converted ", object_name, file_name)
-    os.remove(OUTPUT_PATH + '/models/tmp.ply')
+                input_obj_paths.append(p)
+        input_obj_path = input_obj_paths[-1]    
+    input_texture_path =input_obj_path[:-3] + "png"
+    
+    output_file_name = 'obj_{:06d}.ply'.format(id)
+    output_ply_path = os.path.join(OUTPUT_PATH, 'models', output_file_name)
+    output_png_name = 'obj_{:06d}.png'.format(id)
+    output_png_path = os.path.join(OUTPUT_PATH, 'models', output_png_name)
+    id += 1
+    print("Processing", object_name, output_file_name)
+
+    ms = pymeshlab.MeshSet()
+    ms.load_new_mesh(input_obj_path)
+    ms.save_current_mesh(output_ply_path, binary=False, save_vertex_normal=True)
+    with open(output_ply_path, 'r+') as f:
+        lines = f.readlines()
+
+    
+    lines[3] = "comment TextureFile {}\n".format(output_png_name)
+    with open(output_ply_path, 'r+') as f:
+        f.writelines(lines)
+    os.system("cp {} {}".format(input_texture_path, output_png_path))
+   
     with open(OUTPUT_PATH + '/object_id_to_name.txt', 'a') as f:
-        f.write("{},{}\n".format(file_name, object_name))
-
-
+        f.write("{},{}\n".format(output_file_name, object_name))

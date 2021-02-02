@@ -10,26 +10,31 @@ import glob
 from pathlib import Path
 import math
 
+num_of_objects_per_datasets = {
+    "lm": 15,
+    "tless": 30,
+    "tudl": 3,
+    "icmi": 6,
+    "tyol": 21,
+    "ruapc": 11,
+    "itodd": 28,
+    "hb": 30,
+    "ycbv": 20,
+    "kit": 121,
+    "bigbird": 110,
+}
+
 
 def get_num_of_objs_to_sample_per_dataset(opt, num_of_objs_to_sample):
     
-    num_of_objs_per_dataset = []
+    n_objs = []
     n_total = 0
     for dataset_name in opt["dataset_names"]:
-        model_type = "models_cad" if dataset_name == "tless" else "models"
-        n_obj = len(glob.glob(opt["bop_path"] + '/' + dataset_name + '/' + model_type + '/*.ply'))
-        if dataset_name == "ycbv":
-            n_obj -= 1 # banana
-        elif dataset_name == "ruapc":
-            n_obj -= 2 # crayon, bond
-        num_of_objs_per_dataset.append(n_obj)
+        n_obj = num_of_objects_per_datasets[dataset_name]
+        n_objs.append(n_obj)
         n_total += n_obj
-        print(dataset_name, n_obj)
-    weights = [n_obj/n_total for n_obj in num_of_objs_per_dataset]
-    print(weights, opt["dataset_names"])
+    weights = [n_obj/n_total for n_obj in n_objs]
     choices = np.random.choice(opt["dataset_names"], num_of_objs_to_sample, p=weights)
-    print(choices)
-
     num_of_objs_to_sample_per_dataset = {}
     for dataset_name in opt["dataset_names"]:
         num_of_objs_to_sample_per_dataset[dataset_name] = int(np.sum(np.where(choices==dataset_name, 1, 0)))
@@ -70,14 +75,6 @@ def get_target_obj_ids(opt):
             for file_name in f.readlines():
                 object_idx = int(file_name.split('.')[0].split('_')[1])
                 object_idexes[dataset_name].append(object_idx)
-        if dataset_name == "ycbv":
-            if 10 in object_idexes[dataset_name]: 
-                 object_idexes[dataset_name].remove(10) # banana
-        elif dataset_name == "ruapc":
-            if 3 in object_idexes[dataset_name]: 
-                object_idexes[dataset_name].remove(3) # crayon
-            if 4 in object_idexes[dataset_name]: 
-                object_idexes[dataset_name].remove(4)
     return object_idexes
 
 if __name__ == "__main__":
@@ -85,6 +82,7 @@ if __name__ == "__main__":
     # load args and opt 
     parser = argparse.ArgumentParser()
     parser.add_argument("--opt", type=str, default="test", help="file name of opt file")
+    parser.add_argument("--pid", type=int, default=1, help="process id")
     args = parser.parse_args()
     file_path = Path(__file__).parent.absolute()
     opt_path = os.path.join(file_path, "opts/{}.yaml".format(args.opt))
@@ -92,6 +90,9 @@ if __name__ == "__main__":
         opt = yaml.safe_load(f)
     
     print("Rendering options: \n", opt)
+    opt["output_path"] = os.path.join(opt["output_path"], args.opt + '_' + str(args.pid))
+    print("Saving to", opt["output_path"])
+    os.makedirs(opt["output_path"], exist_ok=True) 
 
     for seq in tqdm(range(opt["start_seq"], opt["end_seq"])):
         

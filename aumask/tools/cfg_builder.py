@@ -226,8 +226,8 @@ def build_plane_loader(opt):
           "strength": {
             "provider": "sampler.Value",
             "type": "float",
-            "min": 3,
-            "max": 6
+            "min": 2,
+            "max": 8,
           }
         }
       }
@@ -291,7 +291,7 @@ def build_object_loader(object_path, category_id):
     ]
 
 def build_bop_loader(opt, dataset_name, num_of_objs_to_sample, obj_ids):
-    upright = True if dataset_name == "kit" else False
+    upright = True if dataset_name in ["kit", "bigbird"] else False
     randomtexture = True if dataset_name == "3dnet" else False
     module = [{
       "module": "loader.BopLoader",
@@ -313,7 +313,7 @@ def build_bop_loader(opt, dataset_name, num_of_objs_to_sample, obj_ids):
       module[0]["config"]["cf_set_shading"] = "SMOOTH"
     return module
 
-def build_object_pose_sampler(opt,is_kit):
+def build_object_pose_sampler(opt,is_upright):
     module =[
      {
       "module": "object.ObjectPoseSampler",
@@ -359,7 +359,7 @@ def build_object_pose_sampler(opt,is_kit):
       }
       ]
 
-    if is_kit:
+    if is_upright:
       module.insert(1, {
       "module": "object.ObjectPoseSampler",
       "config": {
