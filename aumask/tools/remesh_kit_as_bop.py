@@ -37,7 +37,7 @@ for i, input_folder_path in enumerate(tqdm(sorted(glob.glob(INPUT_PATH + '/*')))
             elif "25k" in p:
                 input_obj_paths.append(p)
         input_obj_path = input_obj_paths[-1]    
-    input_texture_path =input_obj_path[:-3] + "png"
+    input_texture_path = input_obj_path[:-3] + "png"
     
     output_file_name = 'obj_{:06d}.ply'.format(id)
     output_ply_path = os.path.join(OUTPUT_PATH, 'models', output_file_name)
@@ -48,14 +48,18 @@ for i, input_folder_path in enumerate(tqdm(sorted(glob.glob(INPUT_PATH + '/*')))
 
     ms = pymeshlab.MeshSet()
     ms.load_new_mesh(input_obj_path)
-    ms.save_current_mesh(output_ply_path, binary=False, save_vertex_normal=True)
-    with open(output_ply_path, 'r+') as f:
+    ms.apply_filter('transfer_color_texture_to_vertex')
+    # ms.save_current_mesh(output_ply_path, binary=False, save_vertex_normal=True, save_wedge_normal=False)
+    ms.save_current_mesh('/home/seung/test.ply', binary=False, save_vertex_normal=True)
+    with open('/home/seung/test.ply', 'r+') as f:
         lines = f.readlines()
 
     
     lines[3] = "comment TextureFile {}\n".format(output_png_name)
-    with open(output_ply_path, 'r+') as f:
+    with open('/home/seung/test.ply', 'r+') as f:
         f.writelines(lines)
+    exit()
+    
     os.system("cp {} {}".format(input_texture_path, output_png_path))
    
     with open(OUTPUT_PATH + '/object_id_to_name.txt', 'a') as f:

@@ -293,12 +293,13 @@ def build_object_loader(object_path, category_id):
 def build_bop_loader(opt, dataset_name, num_of_objs_to_sample, obj_ids):
     upright = True if dataset_name in ["kit", "bigbird"] else False
     randomtexture = True if dataset_name == "3dnet" else False
+    mm2m = False if dataset_name == "bigbird" else True
     module = [{
       "module": "loader.BopLoader",
       "config": {
           "bop_dataset_path": "{}/{}".format(opt["bop_path"], dataset_name),
           "model_type": "",
-          "mm2m": True,
+          "mm2m": mm2m,
           "obj_ids": obj_ids,
           "sample_objects": True,
           "num_of_objs_to_sample": num_of_objs_to_sample,
