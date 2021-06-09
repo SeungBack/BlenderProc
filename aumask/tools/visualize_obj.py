@@ -34,7 +34,7 @@ def create_thumbnail(path, size):
 OBJECT_MODEL_PATH = '/home/seung/BOP'
 OUTPUT_PATH = '/home/seung/BOP'
 DATASETS = ("lm", "tless", "tudl", "icmi", "tyol",  "ruapc", "itodd", "hb", "ycbv", "kit", "bigbird")
-
+DATASETS = ("lm", "ycbv")
 if __name__ == "__main__":
 
     # get mesh paths
@@ -47,7 +47,6 @@ if __name__ == "__main__":
         
         # exclude objects of WISDOM-Real-test
         if dataset == 'ycbv':
-            paths.remove(OBJECT_MODEL_PATH + '/' + dataset + '/models/obj_000002.ply') # 
             paths.remove(OBJECT_MODEL_PATH + '/' + dataset + '/models/obj_000010.ply') # 011_banana
 
         elif dataset == 'ruapc':

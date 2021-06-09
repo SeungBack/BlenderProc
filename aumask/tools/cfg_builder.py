@@ -80,7 +80,7 @@ def build_bin_loader(opt):
           }
         },
         "cp_physics": False,
-        "cp_category_id": 255        
+        "cp_category_id": 3000     
       }
     },
     {
@@ -291,15 +291,15 @@ def build_object_loader(object_path, category_id):
     ]
 
 def build_bop_loader(opt, dataset_name, num_of_objs_to_sample, obj_ids):
-    upright = True if dataset_name in ["kit", "bigbird"] else False
+    upright = True if dataset_name == "kit" else False
     randomtexture = True if dataset_name == "3dnet" else False
-    mm2m = False if dataset_name == "bigbird" else True
+    # mm2m = False if dataset_name == "bigbird" else True
     module = [{
       "module": "loader.BopLoader",
       "config": {
           "bop_dataset_path": "{}/{}".format(opt["bop_path"], dataset_name),
           "model_type": "",
-          "mm2m": mm2m,
+          "mm2m": True,
           "obj_ids": obj_ids,
           "sample_objects": True,
           "num_of_objs_to_sample": num_of_objs_to_sample,
@@ -314,7 +314,7 @@ def build_bop_loader(opt, dataset_name, num_of_objs_to_sample, obj_ids):
       module[0]["config"]["cf_set_shading"] = "SMOOTH"
     return module
 
-def build_object_pose_sampler(opt,is_upright):
+def build_object_pose_sampler(opt):
     module =[
      {
       "module": "object.ObjectPoseSampler",
@@ -341,11 +341,12 @@ def build_object_pose_sampler(opt,is_upright):
         "min_simulation_time": 3,
         "max_simulation_time": 10,
         "check_object_interval": 1,
-        "solver_iters": 25,
+        "solver_iters": 10,
         "substeps_per_frame": 20,
         "friction": 100.0,
         "linear_damping": 0.99,
         "angular_damping": 0.99,
+        "collision_shape": "CONVEX_HULL",
         "objs_with_box_collision_shape": {
           "provider": "getter.Entity",
           "conditions": [{
@@ -360,29 +361,28 @@ def build_object_pose_sampler(opt,is_upright):
       }
       ]
 
-    if is_upright:
-      module.insert(1, {
-      "module": "object.ObjectPoseSampler",
-      "config": {
-        "objects_to_sample": {
-          "provider": "getter.Entity",
-          "conditions": {
-            "cp_upright": True
-          }
-        },
-        "pos_sampler": {
-          "provider":"sampler.Uniform3d",
-          "min": opt["object"]["position"]["min"],
-          "max": opt["object"]["position"]["max"]
-          },
-        "rot_sampler":{
-          "provider":"sampler.UniformSO3",
-          "around_x": False,
-          "around_y": False,
-          "around_z": True,
+    module.insert(1, {
+    "module": "object.ObjectPoseSampler",
+    "config": {
+      "objects_to_sample": {
+        "provider": "getter.Entity",
+        "conditions": {
+          "cp_upright": True
         }
+      },
+      "pos_sampler": {
+        "provider":"sampler.Uniform3d",
+        "min": opt["object"]["position"]["min"],
+        "max": opt["object"]["position"]["max"]
         },
-    })
+      "rot_sampler":{
+        "provider":"sampler.UniformSO3",
+        "around_x": False,
+        "around_y": False,
+        "around_z": True,
+      }
+      },
+  })
 
     return module
 
@@ -464,24 +464,35 @@ def build_camera_sampler(opt):
         }
     else: 
       module[0]["config"]["cam_poses"][0]["rotation"] = {
-      "format": "look_at",
-      "value": {
-            "provider": "getter.POI",
-            "selector": {
-              "provider": "getter.Entity",
-              "conditions": {
-                "type": "MESH",
-              },
-              "random_samples": opt["num_of_imgs_per_seq"]
-            }
+          "format": "look_at",
+          "value": {
+            "provider": "getter.POI"
           },
           "inplane_rot": {
-              "provider": "sampler.Value",
-              "type": "float",
-              "min": opt["camera"]["inplane_rot"]["min"],
-              "max": opt["camera"]["inplane_rot"]["min"]
-          }
-        }     
+            "provider": "sampler.Value",
+            "type": "float",
+            "min": opt["camera"]["inplane_rot"]["min"],
+            "max": opt["camera"]["inplane_rot"]["min"]
+          }}
+      # {
+      # "format": "look_at",
+      # "value": {
+      #       "provider": "getter.POI",
+      #       "selector": {
+      #         "provider": "getter.Entity",
+      #         "conditions": {
+      #           "type": "MESH",
+      #         },
+      #         "random_samples": opt["num_of_imgs_per_seq"]
+      #       }
+      #     },
+      #     "inplane_rot": {
+      #         "provider": "sampler.Value",
+      #         "type": "float",
+      #         "min": opt["camera"]["inplane_rot"]["min"],
+      #         "max": opt["camera"]["inplane_rot"]["min"]
+      #     }
+      #   }     
 
     return module
 
@@ -605,6 +616,24 @@ def build_bop_writer(opt):
         "postprocessing_modules": {
           "distance": [
             {"module": "postprocessing.Dist2Depth"}
+          ]
+        }
+      }
+    },
+    {
+      "module": "renderer.SegMapRenderer",
+      "config": {
+        "map_by": ["class", "instance"]
+      }
+    },
+    {
+      "module": "writer.Hdf5Writer",
+      "config": {
+        "append_to_existing_output": True,
+        "postprocessing_modules": {
+          "distance": [
+          {"module": "postprocessing.TrimRedundantChannels"},
+          {"module": "postprocessing.Dist2Depth"}
           ]
         }
       }

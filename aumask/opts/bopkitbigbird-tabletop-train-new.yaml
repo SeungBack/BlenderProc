@@ -4,23 +4,23 @@ cctexture_path:  "/home/seung/BOP/BlenderProc/resources/cctextures"
 output_path: "/home/seung/BOP/synthetic"
 
 mode: "train"
-dataset_names: ["lm", "tless", "tudl", "icmi", "tyol",  "ruapc", "itodd", "hb", "ycbv", "kit", "bigbird"]
+dataset_names: ["lm", "tless", "tudl", "icmi", "tyol",  "ruapc", "itodd", "hb", "kit", "bigbird"]
 start_seq: 0
-end_seq: 250
-num_of_imgs_per_seq: 10
+end_seq: 100
+num_of_imgs_per_seq: 50
 table_texture_assets: ["Wood"]
 
 object:
   num_of_sample_objs:
-    min: 1
-    max: 25
-    lam: 10
+    min: 10
+    max: 40
+    lam: 20
   position:
-    min: [-0.25, -0.25, 0.0]
-    max: [0.25, 0.25, 0.5]
+    min: [-0.4, -0.4, 0.0]
+    max: [0.4, 0.4, 0.5]
  
 bin: 
-  is_used: true
+  is_used: false
   position:
     min: [0, 0, 0]
     max: [0, 0, 0]
@@ -53,10 +53,10 @@ camera:
   proximity_checks: 0.1
   center: [0, 0, 0]
   radius:
-    min: 0.4
-    max: 1.0
+    min: 0.3
+    max: 0.8
   elevation:
-    min: 80
+    min: 30
     max: 89
   uniform_elevation: True
   inplane_rot:

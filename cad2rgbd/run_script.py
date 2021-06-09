@@ -19,7 +19,7 @@ num_of_objects_per_datasets = {
     "ruapc": 11,
     "itodd": 28,
     "hb": 30,
-    # "ycbv": 20,
+    "ycbv": 20,
     "kit": 121,
     "bigbird": 110,
 }
@@ -30,13 +30,10 @@ def get_num_of_objs_to_sample_per_dataset(opt, num_of_objs_to_sample):
     n_objs = []
     n_total = 0
     for dataset_name in opt["dataset_names"]:
-        if dataset_name == "ycbv":
-            continue
         n_obj = num_of_objects_per_datasets[dataset_name]
         n_objs.append(n_obj)
         n_total += n_obj
     weights = [n_obj/n_total for n_obj in n_objs]
-    print(num_of_objs_to_sample)
     choices = np.random.choice(opt["dataset_names"], num_of_objs_to_sample, p=weights)
     num_of_objs_to_sample_per_dataset = {}
     for dataset_name in opt["dataset_names"]:

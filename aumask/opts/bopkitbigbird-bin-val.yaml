@@ -1,7 +1,7 @@
-bop_path: "/home/demo/BOP"
-blenderproc_path: "/home/demo/BOP/BlenderProc"
-cctexture_path:  "/home/demo/BOP/BlenderProc/resources/cctextures"
-output_path: "/home/demo/BOP/synthetic"
+bop_path: "/home/seung/BOP"
+blenderproc_path: "/home/seung/BOP/BlenderProc"
+cctexture_path:  "/home/seung/BOP/BlenderProc/resources/cctextures"
+output_path: "/home/seung/BOP/synthetic"
 
 mode: "val"
 dataset_names: ["lm", "tless", "tudl", "icmi", "tyol",  "ruapc", "itodd", "hb", "ycbv", "kit", "bigbird"]
@@ -13,23 +13,24 @@ table_texture_assets: ["Wood"]
 object:
   num_of_sample_objs:
     min: 1
-    max: 30
+    max: 25
+    lam: 10
   position:
-    min: [-0.2, -0.2, 0.0]
-    max: [0.2, 0.2, 0.3]
+    min: [-0.25, -0.25, 0.0]
+    max: [0.25, 0.25, 0.5]
  
 bin: 
   is_used: true
   position:
-    min: [-0.05, -0.05, 0.0]
-    max: [0.05, 0.05, 0.0]
+    min: [0, 0, 0]
+    max: [0, 0, 0]
   size:
     X:
-      min: 0.2
-      max: 0.4
+      min: 0.25
+      max: 0.5
     Y:
-      min: 0.2
-      max: 0.4
+      min: 0.25
+      max: 0.5
     Z:
       min: 0.15
       max: 0.3
